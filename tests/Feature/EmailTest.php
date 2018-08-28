@@ -17,12 +17,22 @@ class EmailTest extends TestCase
 	/**
 	 * @test
 	 */
-    public function an_otp_email_is_send_when_user_is_logged_in()
+    public function an_otp_email_is_sent_when_user_is_logged_in()
     {
     	Mail::fake();
 		$this->withoutExceptionHandling();
     	$user = factory(User::class)->create();
     	$res = $this->post('/login', ['email' => $user->email, 'password' => 'secret']);
     	Mail::assertSent(OTPMail::class);
-    }
+	}
+	
+	/**
+	 * @test
+	 */
+	public function an_otp_email_is_not_sent_if_credencials_are_incorrect() {
+		Mail::fake();
+    	$user = factory(User::class)->create();
+    	$res = $this->post('/login', ['email' => $user->email, 'password' => 'secrhhet']);
+    	Mail::assertNotSent(OTPMail::class);
+	}
 }

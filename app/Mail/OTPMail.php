@@ -16,9 +16,9 @@ class OTPMail extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($OTP)
     {
-        //
+        $this->OTP = $OTP;
     }
 
     /**
@@ -28,6 +28,6 @@ class OTPMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('OTP');
+        return $this->markdown('OTP')->with(['OTP' => $this->OTP]);
     }
 }
